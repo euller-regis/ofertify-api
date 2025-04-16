@@ -30,7 +30,6 @@ categoryData.run('furniture');
 categoryData.run('eletronics');
 categoryData.run('books');
 
-
 const insertStatement = database.prepare('INSERT INTO products (product_name, category_id, description, price, image_url) VALUES (?, ?, ?, ?, ?)');
 insertStatement.run('wood table', 1, 'retangular, 150 x 70cm, dark brown', 150, 'https://free-images.com/md/ecf2/wood_table_chairs_bench.jpg');
 insertStatement.run('simple office chair', 1, 'no-wheels, dark grey', 40, 'https://free-images.com/md/79f7/chair_garden_green_hedge.jpg');
