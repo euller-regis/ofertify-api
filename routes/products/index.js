@@ -1,6 +1,5 @@
 'use strict'
 
-
 const { DatabaseSync } = require('node:sqlite');
 
 const database = new DatabaseSync(':memory:');
@@ -9,7 +8,6 @@ const database = new DatabaseSync(':memory:');
       CREATE TABLE categories(
         category_name TEXT,
         id INTEGER PRIMARY KEY
-
       )
     `);
 
@@ -30,7 +28,6 @@ const categoryData = database.prepare('INSERT INTO categories (category_name) VA
 categoryData.run('furniture');
 categoryData.run('eletronics');
 categoryData.run('books');
-
 
 const insertStatement = database.prepare('INSERT INTO products (product_name, category_id, description, price, image_url) VALUES (?, ?, ?, ?, ?)');
 insertStatement.run('wood table', 1, 'retangular, 150 x 70cm, dark brown', 150, 'https://free-images.com/md/ecf2/wood_table_chairs_bench.jpg');
