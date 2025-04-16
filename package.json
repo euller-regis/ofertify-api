@@ -7,11 +7,14 @@
     "test": "test"
   },
   "dependencies": {
+    "@fastify/autoload": "^6.0.0",
+    "@fastify/sensible": "^6.0.0",
     "abstract-logging": "^2.0.1",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "atomic-sleep": "^1.0.0",
     "avvio": "^9.1.0",
+    "axios": "^1.8.4",
     "cookie": "^1.0.2",
     "dequal": "^2.0.3",
     "fast-decode-uri-component": "^1.0.1",
@@ -21,6 +24,8 @@
     "fast-redact": "^3.5.0",
     "fast-uri": "^3.0.6",
     "fastify": "^5.0.0",
+    "fastify-cli": "^7.3.0",
+    "fastify-plugin": "^5.0.0",
     "fastq": "^1.19.0",
     "find-my-way": "^9.2.0",
     "ipaddr.js": "^2.2.0",
@@ -46,17 +51,13 @@
     "sonic-boom": "^4.2.0",
     "split2": "^4.2.0",
     "thread-stream": "^3.1.0",
-    "toad-cache": "^3.7.0",
-    "fastify-plugin": "^5.0.0",
-    "@fastify/autoload": "^6.0.0",
-    "@fastify/sensible": "^6.0.0",
-    "fastify-cli": "^7.3.0"
+    "toad-cache": "^3.7.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "node --test test/**/*.test.js",
-    "start": "fastify start -l info app.js",
-    "dev": "fastify start -w -l info -P app.js"
+    "start": "fastify start -l info -p 3002 -a 0.0.0.0 app.js",
+    "preinstall": "git config core.hooksPath hooks",
+    "dev": "fastify start -w -l info -p 3002 -a 0.0.0.0 app.js"
   },
   "repository": {
     "type": "git",
