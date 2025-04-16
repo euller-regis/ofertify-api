@@ -9,7 +9,6 @@ const database = new DatabaseSync(':memory:');
       CREATE TABLE categories(
         category_name TEXT,
         id INTEGER PRIMARY KEY
-
       )
     `);
 
