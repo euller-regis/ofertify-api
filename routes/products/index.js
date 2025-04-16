@@ -1,6 +1,5 @@
 'use strict'
 
-const { access } = require('fs');
 const { DatabaseSync } = require('node:sqlite');
 
 const database = new DatabaseSync(':memory:');
