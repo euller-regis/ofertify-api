@@ -54,7 +54,7 @@
     "toad-cache": "^3.7.0"
   },
   "scripts": {
-    "test": "node --test test/**/*.test.js",
+    "test": "jest",
     "start": "fastify start -l info -p 3002 -a 0.0.0.0 app.js",
     "preinstall": "git config core.hooksPath hooks",
     "dev": "fastify start -w -l info -p 3002 -a 0.0.0.0 app.js"
@@ -69,5 +69,8 @@
   "bugs": {
     "url": "https://github.com/euller-regis/ofertify-api/issues"
   },
-  "homepage": "https://github.com/euller-regis/ofertify-api#readme"
+  "homepage": "https://github.com/euller-regis/ofertify-api#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
