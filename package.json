@@ -71,6 +71,7 @@
   },
   "homepage": "https://github.com/euller-regis/ofertify-api#readme",
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
     "jest": "^29.7.0"
   }
 }
