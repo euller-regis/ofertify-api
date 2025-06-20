@@ -13,5 +13,15 @@ function sortProducts(list, sortType){
     }
 }
 
-const commons = {sortProducts : sortProducts}
+function paginate(list, page, page_size){
+    const pg = Number(page)
+    const pgsz = Number(page_size)
+    const currentPage = list.slice((pg-1) * pgsz, pg * pgsz)
+    return currentPage
+}
+
+const commons = {
+    sortProducts : sortProducts,
+        paginate : paginate
+}
 module.exports = commons
