@@ -3,6 +3,7 @@
 const { DatabaseSync } = require('node:sqlite');
 const { faker } = require('@faker-js/faker');
 const { sortProducts } = require('../../utils/common.js')
+const { paginate } = require('../../utils/common.js')
 
 const database = new DatabaseSync(':memory:');
 
@@ -55,11 +56,7 @@ module.exports = async function (fastify, opts) {
 
       const products = sortProducts(query.all().filter(product => !search || product.product_name.toLowerCase().includes(search.toLowerCase())), sort )
 
+      return paginate(products, page, page_size)
       
-      const pg = Number(page)
-      const pgsz = Number(page_size)
-
-      return products.slice((pg - 1) * pgsz, (pgsz * pg))
-
   })
 }
