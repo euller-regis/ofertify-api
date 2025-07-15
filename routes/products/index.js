@@ -54,9 +54,13 @@ module.exports = async function (fastify, opts) {
 
       const query = database.prepare("SELECT product_name, id, price, image_url FROM products")
 
-      const products = sortProducts(query.all().filter(product => !search || product.product_name.toLowerCase().includes(search.toLowerCase())), sort )
+      const prod = sortProducts(query.all().filter(product => !search || product.product_name.toLowerCase().includes(search.toLowerCase())), sort )
 
-      return paginate(products, page, page_size)
+      const products = paginate(prod, page, page_size)
+      const products_total = Object.keys(prod).length
+      const page_total = Math.ceil(products_total / Number(page_size))
+
+      return {products : products, products_total : products_total, page_total : page_total} 
       
   })
 }
