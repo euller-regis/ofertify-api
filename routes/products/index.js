@@ -108,6 +108,11 @@ module.exports = async function (fastify, opts) {
             products_total: products_total,
             page_total: page_total,
             page: Number(page),
+            sortOptions: [
+                { value: "name", label: "ABC" },
+                { value: "priceASC", label: "lowest price" },
+                { value: "priceDSC", label: "highest price" },
+            ],
         };
     });
 };
