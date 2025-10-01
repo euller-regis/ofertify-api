@@ -140,7 +140,7 @@ module.exports = async function (fastify, opts) {
 
         const { slug } = request.params;
         const query = database.prepare(
-            "SELECT product_name, description, condition, location, category_id, price, image_url FROM products WHERE slug = ?"
+            "SELECT product_name, description, condition, location, category_id, price, image_url, category_name FROM products p INNER JOIN categories c on p.category_id = c.id WHERE slug = ?"
         );
 
         const product = query.get(slug);
