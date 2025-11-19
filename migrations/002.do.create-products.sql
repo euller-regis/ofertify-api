@@ -1,4 +1,4 @@
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
   id INT NOT NULL AUTO_INCREMENT,
   slug VARCHAR(255) NOT NULL UNIQUE,
   product_name TEXT,

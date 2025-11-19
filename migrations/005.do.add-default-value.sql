@@ -1,0 +1,1 @@
+ALTER TABLE product_images ALTER COLUMN is_primary SET DEFAULT false;

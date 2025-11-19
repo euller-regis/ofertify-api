@@ -1,4 +1,4 @@
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
   id INT NOT NULL AUTO_INCREMENT,
   product_id INT,
   url TEXT,
