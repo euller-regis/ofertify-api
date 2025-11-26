@@ -1,16 +1,19 @@
 "use strict";
 
-const { DatabaseSync } = require("node:sqlite");
-const { faker } = require("@faker-js/faker");
 const { sortProducts } = require("../../utils/common.js");
 const { paginate } = require("../../utils/common.js");
-const { url } = require("inspector");
+require("dotenv").config();
+
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_NAME = process.env.DB_NAME;
 
 module.exports = async function (fastify, opts) {
     fastify.register(require("@fastify/mysql"), {
         promise: true,
-        connectionString:
-            "mysql://admin:1q2w3e4r@products.cfg2mi06cdap.eu-north-1.rds.amazonaws.com:3306",
+        connectionString: `mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
     });
 
     fastify.get("/", async function (request, reply) {
@@ -29,8 +32,8 @@ module.exports = async function (fastify, opts) {
         reply.header("Access-Control-Allow-Headers", "*");
 
         const [rows] = await connection.query(
-            `SELECT p.id, product_name, slug, price, category_id, url FROM ofertify.products p
-             JOIN ofertify.product_images i on p.id = (SELECT i.product_id FROM ofertify.product_images LIMIT 1)`
+            `SELECT p.id, product_name, slug, price, category_id, url FROM products p
+             JOIN (SELECT product_id,url FROM product_images i1 WHERE is_primary = true) i on i.product_id = p.id`
         );
 
         const prod = sortProducts(
@@ -71,13 +74,13 @@ module.exports = async function (fastify, opts) {
         const { slug } = request.params;
         const [[product]] = await connection.query(
             `SELECT p.id, product_name, description, product_condition, location, category_id, price, 
-            category_name FROM ofertify.products p INNER JOIN ofertify.categories c on 
+            category_name FROM products p INNER JOIN categories c on 
             p.category_id = c.id WHERE slug = ?`,
             [slug]
         );
 
         const [imgQuery] = await connection.query(
-            `SELECT url FROM ofertify.products p INNER JOIN ofertify.product_images i on
+            `SELECT url FROM products p INNER JOIN product_images i on
             p.id = i.product_id WHERE p.id = ?`,
             [product.id]
         );
@@ -95,9 +98,7 @@ module.exports = async function (fastify, opts) {
 
     fastify.get("/database", async function (request, reply) {
         const connection = await fastify.mysql.getConnection();
-        const [rows] = await connection.query(
-            "SELECT * FROM ofertify.products"
-        );
+        const [rows] = await connection.query("SELECT * FROM products");
         connection.release();
         return rows;
     });
