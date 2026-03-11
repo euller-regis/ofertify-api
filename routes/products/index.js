@@ -32,7 +32,7 @@ module.exports = async function (fastify, opts) {
         reply.header("Access-Control-Allow-Headers", "*");
 
         const [rows] = await connection.query(
-            `SELECT p.id, product_name, slug, price, category_id, url FROM products p
+            `SELECT p.id, product_name, slug, price, category_id, url AS image_url FROM products p
              JOIN (SELECT product_id,url FROM product_images i1 WHERE is_primary = true) i on i.product_id = p.id`
         );
 
@@ -79,13 +79,15 @@ module.exports = async function (fastify, opts) {
             [slug]
         );
 
-        const [imgQuery] = await connection.query(
-            `SELECT url FROM products p INNER JOIN product_images i on
+        const [images] = await connection.query(
+            `SELECT i.id AS id,url,is_primary  FROM products p INNER JOIN product_images i on
             p.id = i.product_id WHERE p.id = ?`,
             [product.id]
         );
 
-        product.images = imgQuery;
+        product.images = images;
+
+        product.primary_image = images.find((obj) => obj.is_primary == 1);
 
         connection.release();
 
@@ -102,4 +104,30 @@ module.exports = async function (fastify, opts) {
         connection.release();
         return rows;
     });
+
+    fastify.post("/new-product", async function (request, reply) {
+        const connection = await fastify.mysql.getConnection();
+
+        const { product_name, description, product_condition, location, category_id, price } = request.body;
+        const slug = product_name.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
+
+        const [newProduct] = await connection.query(
+            "INSERT INTO products (product_name, description, product_condition, location, category_id, price, slug) VALUES (?,?,?,?,?,?,?)",
+            [product_name, description, product_condition, location, category_id, price, slug]
+        );
+
+        connection.release();
+        return { id: newProduct.insertId, slug }; 
+    });
+
+//    fastify.post("/new-product-images", async function (request, reply) {
+  //      const connection = await fastify.mysql.getConnection();
+//
+  //      const [newProductImg] = await connection.query(
+    //        "INSERT INTO product_images () VALUES ()"
+      //  );
+//
+  //      connection.release();
+    //    return;
+   // });
 };
