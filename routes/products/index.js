@@ -120,14 +120,4 @@ module.exports = async function (fastify, opts) {
         return { id: newProduct.insertId, slug }; 
     });
 
-//    fastify.post("/new-product-images", async function (request, reply) {
-  //      const connection = await fastify.mysql.getConnection();
-//
-  //      const [newProductImg] = await connection.query(
-    //        "INSERT INTO product_images () VALUES ()"
-      //  );
-//
-  //      connection.release();
-    //    return;
-   // });
 };
